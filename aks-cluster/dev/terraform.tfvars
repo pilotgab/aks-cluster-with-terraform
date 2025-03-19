@@ -1,6 +1,6 @@
 rgname                 = "dev-pilotgab-rg"
 service_principal_name = "dev-pilotgab-spn"
 keyvault_name          = "dev-pilotgab-kv-101"
-SUB_ID = ""
+SUB_ID = "2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a"
 cluster_name = "dev-pilotgab-cluster"
 node_pool_name = "devnp"
