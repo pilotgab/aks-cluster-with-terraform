@@ -75,12 +75,12 @@ jobs:
 
       - name: Terraform Plan (Dev)
         id: plan-dev
-        run: terraform plan
+        run: terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: aks-cluster/dev
 
       - name: Terraform Apply (Dev)
         id: apply-dev
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: aks-cluster/dev
 
   staging-deploy:

@@ -8,8 +8,9 @@ variable "service_principal_name" {
 }
 
 variable "ssh_public_key" {
+  description = "ssh public key for the cluster"
   type = string
-  default = ""
+
 }
 
 variable "client_id" {}
