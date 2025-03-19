@@ -21,8 +21,15 @@ variable "SUB_ID" {
   type = string
 }
 variable "node_pool_name" {
-  
+
 }
 variable "cluster_name" {
-  
+
+}
+
+
+variable "ssh_public_key" {
+  description = "ssh public key for the cluster"
+  type = string
+
 }
