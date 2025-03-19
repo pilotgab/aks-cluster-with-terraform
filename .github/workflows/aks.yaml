@@ -95,7 +95,9 @@ jobs:
 
       - name: Terraform Init (Staging)
         id: init-staging
-        run: terraform init
+        run: |
+          terraform init
+          terraform plan
         working-directory: aks-cluster/staging
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -107,10 +109,10 @@ jobs:
           ARM_CONTAINER_NAME: "tfstate"
           ARM_KEY: "stage.terraform.tfstate"
 
-      - name: Terraform Plan (Staging)
-        id: plan-staging
-        run: terraform plan
-        working-directory: aks-cluster/staging
+      # - name: Terraform Plan (Staging)
+      #   id: plan-staging
+      #   run: terraform plan
+      #   working-directory: aks-cluster/staging
 
       - name: Terraform Apply (Staging)
         id: apply-staging
