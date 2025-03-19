@@ -23,7 +23,7 @@ jobs:
 
       - name: Terraform Init (Validation)
         run: terraform init
-        working-directory: aks-cluster/dev
+        working-directory: aks-cluster/environments/dev
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: aks-cluster/dev
+        working-directory: aks-cluster/environments/dev
 
   deploy:
     name: Deploy to ${{ github.ref_name }}-env
@@ -59,15 +59,15 @@ jobs:
         id: set-env
         run: |
           if [ "${{ github.ref_name }}" == "dev" ]; then
-            echo "WORKDIR=aks-cluster/dev" >> $GITHUB_ENV
+            echo "WORKDIR=aks-cluster/environments/dev" >> $GITHUB_ENV
             echo "STORAGE_ACCOUNT=pilotgabdevbackend2025" >> $GITHUB_ENV
             echo "STATE_KEY=dev.terraform.tfstate" >> $GITHUB_ENV
           elif [ "${{ github.ref_name }}" == "main" ]; then
-            echo "WORKDIR=aks-cluster/staging" >> $GITHUB_ENV
+            echo "WORKDIR=aks-cluster/environments/staging" >> $GITHUB_ENV
             echo "STORAGE_ACCOUNT=pilotgabstagebackend2025" >> $GITHUB_ENV
             echo "STATE_KEY=stage.terraform.tfstate" >> $GITHUB_ENV
           else
-            echo "WORKDIR=aks-cluster/prod" >> $GITHUB_ENV
+            echo "WORKDIR=aks-cluster/environments/prod" >> $GITHUB_ENV
             echo "STORAGE_ACCOUNT=pilotgabprodbackend2025" >> $GITHUB_ENV
             echo "STATE_KEY=prod.terraform.tfstate" >> $GITHUB_ENV
           fi
