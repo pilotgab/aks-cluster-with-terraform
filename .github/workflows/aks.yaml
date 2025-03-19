@@ -4,9 +4,7 @@ on:
     branches:
       - main
       - master
-      - feature/*
-    paths:
-      - "aks-cluster/*"
+      - feature
 
 jobs:
   validate:
