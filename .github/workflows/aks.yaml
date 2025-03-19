@@ -55,6 +55,13 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: Generate SSH Key Pair
+        id: generate-ssh-key
+        run: |
+          mkdir -p .ssh
+          ssh-keygen -t rsa -b 4096 -C "staging-deploy" -f .ssh/id_rsa -N ""
+          echo "SSH_PUBLIC_KEY=$(cat .ssh/id_rsa.pub)" >> $GITHUB_ENV
+
       - name: Terraform Init (Dev)
         id: init-dev
         run: terraform init
@@ -93,11 +100,18 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: Generate SSH Key Pair
+        id: generate-ssh-key
+        run: |
+          mkdir -p .ssh
+          ssh-keygen -t rsa -b 4096 -C "staging-deploy" -f .ssh/id_rsa -N ""
+          echo "SSH_PUBLIC_KEY=$(cat .ssh/id_rsa.pub)" >> $GITHUB_ENV
+
       - name: Terraform Init (Staging)
         id: init-staging
         run: |
           terraform init
-          terraform plan
+          terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: aks-cluster/staging
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -116,7 +130,7 @@ jobs:
 
       - name: Terraform Apply (Staging)
         id: apply-staging
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: aks-cluster/staging
 
   prod-deploy:
