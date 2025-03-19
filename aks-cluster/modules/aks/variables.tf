@@ -8,7 +8,8 @@ variable "service_principal_name" {
 }
 
 variable "ssh_public_key" {
-  default = ".ssh/id_rsa.pub"
+  type = string
+  default = ""
 }
 
 variable "client_id" {}
@@ -18,8 +19,8 @@ variable "client_secret" {
 }
 
 variable "node_pool_name" {
-  
+
 }
 variable "cluster_name" {
-  
+
 }
