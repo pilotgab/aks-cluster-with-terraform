@@ -6,7 +6,3 @@ terraform {
     key                 = "stage.terraform.tfstate"
   }
 }
-
-provider "azurerm" {
-  features {}
-}
