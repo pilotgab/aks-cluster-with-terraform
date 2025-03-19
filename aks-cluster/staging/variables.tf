@@ -22,8 +22,13 @@ variable "SUB_ID" {
 }
 
 variable "node_pool_name" {
-  
+
 }
 variable "cluster_name" {
-  
+
+}
+
+variable "ssh_public_key" {
+  type = string
+  default = ""
 }
