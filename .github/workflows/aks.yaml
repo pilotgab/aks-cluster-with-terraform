@@ -95,7 +95,9 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Terraform Plan
-        run: terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+        run: |
+          terraform force-unlock 44fa01e5-b540-7bad-8c62-3129c1c26694
+          terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
