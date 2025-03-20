@@ -79,6 +79,13 @@
     location            = data.azurerm_resource_group.this.location
     resource_group_name = data.azurerm_resource_group.this.name
     tags                = var.tags
+
+    route {
+      name           = "DefaultRoute"
+      address_prefix = "0.0.0.0/0"
+      next_hop_type  = "VirtualAppliance"
+      next_hop_in_ip_address = azurerm_nat_gateway.this.id
+    }
   }
 
   resource "azurerm_subnet_route_table_association" "private" {
