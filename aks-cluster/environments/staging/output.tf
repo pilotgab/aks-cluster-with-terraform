@@ -13,3 +13,17 @@ output "client_secret" {
   sensitive = true
 
 }
+
+
+# outputs.tf (root)
+output "vnet_id" {
+  value = module.vnet.vnet_id
+}
+
+output "public_subnets" {
+  value = module.vnet.public_subnets
+}
+
+output "private_subnets" {
+  value = module.vnet.private_subnets
+}
