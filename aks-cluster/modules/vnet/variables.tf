@@ -68,10 +68,6 @@ variable "log_analytics_workspace_guid" {
 }
 
 variable "workspace_region" {
-  type = string
-}
-
-variable "workspace_region" {
   description = "The region of the Log Analytics workspace."
   type        = string
 }
