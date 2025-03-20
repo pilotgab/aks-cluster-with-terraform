@@ -30,3 +30,9 @@ variable "subnet_ids" {
   description = "List of private subnet IDs for the AKS cluster"
   type        = list(string)
 }
+
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
+}
