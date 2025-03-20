@@ -33,3 +33,28 @@ variable "ssh_public_key" {
   type = string
 
 }
+
+variable "address_space" {
+  type        = string
+  description = "VNet CIDR block"
+}
+
+variable "public_subnet_cidrs" {
+  type        = list(string)
+  description = "List of public subnet CIDRs"
+}
+
+variable "private_subnet_cidrs" {
+  type        = list(string)
+  description = "List of private subnet CIDRs"
+}
+
+variable "name" {
+  type        = string
+  description = "Prefix name for resources"
+}
+
+variable "subnet_ids" {
+  description = "List of private subnet IDs where AKS nodes should be deployed"
+  type        = list(string)
+}

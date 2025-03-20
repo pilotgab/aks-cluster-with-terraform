@@ -37,7 +37,7 @@ module "keyvault" {
   ]
 }
 
-resource "azurerm_key_vault_secret" "example" {
+resource "azurerm_key_vault_secret" "pilotgab_kv" {
   name         = module.ServicePrincipal.client_id
   value        = module.ServicePrincipal.client_secret
   key_vault_id = module.keyvault.keyvault_id
@@ -55,12 +55,14 @@ module "aks" {
   client_secret          = module.ServicePrincipal.client_secret
   location               = var.location
   resource_group_name    = var.rgname
-  cluster_name = var.cluster_name
-  node_pool_name = var.node_pool_name
-  ssh_public_key = var.ssh_public_key
+  cluster_name           = var.cluster_name
+  node_pool_name         = var.node_pool_name
+  ssh_public_key         = var.ssh_public_key
+  subnet_ids             = module.vnet.private_subnets
 
   depends_on = [
-    module.ServicePrincipal
+    module.ServicePrincipal,
+    module.vnet
   ]
 
 }
@@ -70,4 +72,16 @@ resource "local_file" "kubeconfig" {
   filename     = "./kubeconfig"
   content      = module.aks.config
 
+}
+
+
+module "vnet" {
+  source              = "../../modules/vnet"
+  name                = var.name
+  resource_group_name = var.rgname
+  location            = var.location
+  address_space       = var.address_space
+
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
 }

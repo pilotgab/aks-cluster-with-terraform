@@ -23,9 +23,10 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     zones   = [1, 2, 3]
     auto_scaling_enabled = true
     max_count            = 2
-    min_count            = 1
+    min_count            = 2
     os_disk_size_gb      = 30
     type                 = "VirtualMachineScaleSets"
+    vnet_subnet_id       = var.subnet_ids[0]
 
   }
 
@@ -34,8 +35,8 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     client_secret = var.client_secret
   }
 
-# to do: generate the ssh keys using tls_private_key
-# upload the key to key vault
+ # to do: generate the ssh keys using tls_private_key
+ # upload the key to key vault
 
   linux_profile {
     admin_username = "ubuntu"
@@ -45,8 +46,9 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   }
 
   network_profile {
-      network_plugin = "azure"
-      load_balancer_sku = "standard"
+    network_plugin     = "azure"
+    load_balancer_sku  = "standard"
+    outbound_type      = "userDefinedRouting"
   }
 
 
