@@ -74,14 +74,16 @@ resource "local_file" "kubeconfig" {
 }
 
 module "vnet" {
-  source              = "../../modules/vnet/"
-  name                = var.name
-  resource_group_name = var.rgname
-  location            = var.location
-  address_space       = var.address_space
+  source                       = "../../modules/vnet/"
+  name                         = var.name
+  resource_group_name          = var.rgname
+  location                     = var.location
+  address_space                = var.address_space
 
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
+  public_subnet_cidrs          = var.public_subnet_cidrs
+  private_subnet_cidrs         = var.private_subnet_cidrs
+  firewall_subnet_cidr         = var.firewall_subnet_cidr
+  log_analytics_workspace_id   = var.log_analytics_workspace_id
 
 
   depends_on = [azurerm_resource_group.rg1]

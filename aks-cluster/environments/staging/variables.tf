@@ -54,3 +54,30 @@ variable "name" {
   type        = string
   description = "Prefix name for resources"
 }
+
+variable "firewall_subnet_cidr" {
+  description = "CIDR for Azure Firewall subnet"
+  type        = string
+}
+
+variable "log_analytics_workspace_id" {
+  description = "Log Analytics workspace ID for flow logs"
+  type        = string
+}
+
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "firewall_dns_servers" {
+  description = "List of DNS servers for the firewall policy"
+  type        = list(string)
+}
+
+variable "threat_intel_mode" {
+  description = "The threat intelligence mode for the firewall policy"
+  type        = string
+  default     = "Alert"
+}
