@@ -23,11 +23,6 @@ variable "firewall_subnet_cidr" {
   type        = string
 }
 
-variable "log_analytics_workspace_id" {
-  description = "Log Analytics workspace ID for flow logs"
-  type        = string
-}
-
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "List of public subnet CIDR ranges"

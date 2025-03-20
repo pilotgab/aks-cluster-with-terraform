@@ -60,11 +60,6 @@ variable "firewall_subnet_cidr" {
   type        = string
 }
 
-variable "log_analytics_workspace_id" {
-  description = "Log Analytics workspace ID for flow logs"
-  type        = string
-}
-
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
