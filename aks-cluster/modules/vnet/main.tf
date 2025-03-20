@@ -242,8 +242,8 @@ resource "azurerm_network_watcher_flow_log" "this" {
   for_each = local.nsgs
 
   name                 = "${var.name}-flowlog-${each.key}"
-  network_watcher_name = azurerm_network_watcher.this.name
-  resource_group_name  = azurerm_network_watcher.this.resource_group_name
+  network_watcher_name = data.azurerm_network_watcher.this.name
+  resource_group_name  = data.azurerm_network_watcher.this.resource_group_name
   target_resource_id   = each.value
   storage_account_id   = azurerm_storage_account.this.id
   enabled              = true
