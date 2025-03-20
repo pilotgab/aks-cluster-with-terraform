@@ -84,15 +84,14 @@
       name           = "DefaultRoute"
       address_prefix = "0.0.0.0/0"
       next_hop_type  = "VirtualAppliance"
-      next_hop_in_ip_address = azurerm_nat_gateway.this.id
+      next_hop_in_ip_address = azurerm_public_ip.nat.ip_address
     }
   }
-
   resource "azurerm_subnet_route_table_association" "private" {
     count          = length(var.private_subnet_cidrs)
     subnet_id      = azurerm_subnet.private[count.index].id
     route_table_id = azurerm_route_table.private.id
-}
+  }
 
   resource "azurerm_network_security_group" "public" {
     name                = "${var.name}-public-nsg"
