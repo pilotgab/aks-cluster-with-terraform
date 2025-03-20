@@ -1,14 +1,18 @@
+data "azurerm_resource_group" "this" {
+  name = var.resource_group_name
+}
+
 resource "azurerm_virtual_network" "this" {
   name                = "${var.name}-vnet"
   address_space       = [var.address_space]
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 }
 
 resource "azurerm_subnet" "public" {
   count                = length(var.public_subnet_cidrs)
   name                 = "${var.name}-public-subnet-${count.index + 1}"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = data.azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [var.public_subnet_cidrs[count.index]]
 }
@@ -16,21 +20,20 @@ resource "azurerm_subnet" "public" {
 resource "azurerm_subnet" "private" {
   count                = length(var.private_subnet_cidrs)
   name                 = "${var.name}-private-subnet-${count.index + 1}"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = data.azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [var.private_subnet_cidrs[count.index]]
 }
 
 resource "azurerm_route_table" "private" {
   name                = "${var.name}-private-rt"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 }
 
 resource "azurerm_route" "private_internet" {
   name                   = "default-to-internet"
-  resource_group_name    = var.resource_group_name
+  resource_group_name    = data.azurerm_resource_group.this.name
   route_table_name       = azurerm_route_table.private.name
   address_prefix         = "0.0.0.0/0"
   next_hop_type          = "Internet"
@@ -38,8 +41,8 @@ resource "azurerm_route" "private_internet" {
 
 resource "azurerm_route_table" "public" {
   name                = "${var.name}-public-rt"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 
   route {
     name                   = "internet-route"
@@ -62,19 +65,17 @@ resource "azurerm_subnet_route_table_association" "public" {
 
 resource "azurerm_public_ip" "nat" {
   name                = "${var.name}-nat-ip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
 }
 
 resource "azurerm_nat_gateway" "this" {
-  name                 = "${var.name}-nat-gateway"
-  location             = var.location
-  resource_group_name  = var.resource_group_name
-  sku_name             = "Standard"
-
-  depends_on = [azurerm_public_ip.nat]
+  name                = "${var.name}-nat-gateway"
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
+  sku_name            = "Standard"
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "this" {
@@ -90,8 +91,8 @@ resource "azurerm_subnet_nat_gateway_association" "private" {
 
 resource "azurerm_network_security_group" "public" {
   name                = "${var.name}-public-nsg"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 
   security_rule {
     name                       = "AllowInternetInbound"
@@ -120,8 +121,8 @@ resource "azurerm_network_security_group" "public" {
 
 resource "azurerm_network_security_group" "private" {
   name                = "${var.name}-private-nsg"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 
   security_rule {
     name                       = "DenyInboundInternet"
