@@ -116,6 +116,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
+          terraform force-unlock -force fc97be96-975d-d4ea-5093-4f5b18c8b283
           terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
         env:
