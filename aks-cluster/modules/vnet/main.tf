@@ -261,7 +261,6 @@ resource "azurerm_network_watcher_flow_log" "this" {
   }
 
   depends_on = [
-  azurerm_network_watcher.this,
   azurerm_storage_account.this
   ]
 }
