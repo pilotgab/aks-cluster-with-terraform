@@ -16,3 +16,4 @@ threat_intel_mode    = "Alert"
 tags = {
   environment = "staging"
   owner       = "pilotgab"
+}
