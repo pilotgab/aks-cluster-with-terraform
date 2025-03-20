@@ -73,9 +73,8 @@ resource "local_file" "kubeconfig" {
 
 }
 
-
 module "vnet" {
-  source              = "../../modules/vnet"
+  source              = "../../modules/vnet/"
   name                = var.name
   resource_group_name = var.rgname
   location            = var.location
