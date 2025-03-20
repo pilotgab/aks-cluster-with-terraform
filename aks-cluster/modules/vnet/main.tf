@@ -227,7 +227,7 @@ resource "azurerm_firewall" "this" {
 }
 
 resource "azurerm_network_watcher" "this" {
-  name                = "${var.name}-networkwatcher"
+  name                = "NetworkWatcher_${data.azurerm_resource_group.this.location}"
   location            = data.azurerm_resource_group.this.location
   resource_group_name = data.azurerm_resource_group.this.name
   tags                = var.tags
@@ -257,10 +257,15 @@ resource "azurerm_network_watcher_flow_log" "this" {
 
   traffic_analytics {
     enabled               = true
-    workspace_region      = data.azurerm_resource_group.this.location
+    workspace_region      = var.workspace_region
     workspace_id          = var.log_analytics_workspace_guid
     workspace_resource_id = var.log_analytics_workspace_id
   }
+
+  depends_on = [
+  azurerm_network_watcher.this,
+  azurerm_storage_account.this
+  ]
 }
 
 resource "azurerm_storage_account" "this" {

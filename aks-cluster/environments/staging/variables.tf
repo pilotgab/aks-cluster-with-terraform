@@ -77,7 +77,4 @@ variable "threat_intel_mode" {
   default     = "Alert"
 }
 
-variable "log_analytics_workspace_guid" {
-  description = "The GUID (workspace_id) of the Log Analytics workspace."
-  type        = string
-}
+
