@@ -14,13 +14,13 @@ output "nat_gateway_id" {
   value = azurerm_nat_gateway.this.id
 }
 
-output "firewall_id" {
-  value = azurerm_firewall.this.id
-}
+# output "firewall_id" {
+#   value = azurerm_firewall.this.id
+# }
 
-output "firewall_private_ip" {
-  value = azurerm_firewall.this.ip_configuration[0].private_ip_address
-}
+# output "firewall_private_ip" {
+#   value = azurerm_firewall.this.ip_configuration[0].private_ip_address
+# }
 
 output "network_watcher_flow_log_ids" {
   description = "Map of network watcher flow log IDs by NSG (private/public)"

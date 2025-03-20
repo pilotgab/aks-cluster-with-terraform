@@ -18,10 +18,10 @@ variable "address_space" {
   description = "CIDR for the virtual network"
 }
 
-variable "firewall_subnet_cidr" {
-  description = "CIDR for Azure Firewall subnet"
-  type        = string
-}
+# variable "firewall_subnet_cidr" {
+#   description = "CIDR for Azure Firewall subnet"
+#   type        = string
+# }
 
 variable "public_subnet_cidrs" {
   type        = list(string)
@@ -45,17 +45,17 @@ variable "zones" {
   default     = ["1", "2", "3"]
 }
 
-variable "firewall_dns_servers" {
-  description = "List of DNS servers for Azure Firewall"
-  type        = list(string)
-  default     = []
-}
+# variable "firewall_dns_servers" {
+#   description = "List of DNS servers for Azure Firewall"
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "threat_intel_mode" {
-  description = "Threat intelligence mode for firewall policy (Off, Alert, or Deny)"
-  type        = string
-  default     = "Alert"
-}
+# variable "threat_intel_mode" {
+#   description = "Threat intelligence mode for firewall policy (Off, Alert, or Deny)"
+#   type        = string
+#   default     = "Alert"
+# }
 
 variable "log_analytics_workspace_id" {
   description = "Log Analytics Workspace Resource ID for flow logs"

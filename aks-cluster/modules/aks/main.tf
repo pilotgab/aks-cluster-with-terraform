@@ -46,9 +46,9 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   }
 
   network_profile {
-    network_plugin     = "azure"
-    load_balancer_sku  = "standard"
-    outbound_type      = "userDefinedRouting"
+    network_plugin    = "azure"
+    load_balancer_sku = "standard"
+    outbound_type     = "loadBalancer"
     service_cidr      = "10.250.0.0/16"
     dns_service_ip    = "10.250.0.10"
 

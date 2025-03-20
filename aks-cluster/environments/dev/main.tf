@@ -65,7 +65,7 @@ module "vnet" {
   address_space               = var.address_space
   public_subnet_cidrs         = var.public_subnet_cidrs
   private_subnet_cidrs        = var.private_subnet_cidrs
-  firewall_subnet_cidr        = var.firewall_subnet_cidr
+  #firewall_subnet_cidr        = var.firewall_subnet_cidr
   workspace_region            = var.location
   log_analytics_workspace_id     = azurerm_log_analytics_workspace.this.id
   log_analytics_workspace_guid   = azurerm_log_analytics_workspace.this.workspace_id
