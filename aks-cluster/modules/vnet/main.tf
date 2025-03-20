@@ -31,14 +31,6 @@ resource "azurerm_route_table" "private" {
   resource_group_name = data.azurerm_resource_group.this.name
 }
 
-resource "azurerm_route" "private_internet" {
-  name                   = "default-to-internet"
-  resource_group_name    = data.azurerm_resource_group.this.name
-  route_table_name       = azurerm_route_table.private.name
-  address_prefix         = "0.0.0.0/0"
-  next_hop_type          = "Internet"
-}
-
 resource "azurerm_route_table" "public" {
   name                = "${var.name}-public-rt"
   location            = data.azurerm_resource_group.this.location
