@@ -258,9 +258,11 @@ resource "azurerm_network_watcher_flow_log" "this" {
 
   traffic_analytics {
     enabled               = true
-    workspace_id          = azurerm_log_analytics_workspace.this.workspace_id
+    #workspace_id          = azurerm_log_analytics_workspace.this.workspace_id
     workspace_region      = data.azurerm_resource_group.this.location
-    workspace_resource_id = azurerm_log_analytics_workspace.this.id
+    #workspace_resource_id = azurerm_log_analytics_workspace.this.id
+    workspace_id          = var.log_analytics_workspace_id
+    workspace_resource_id = var.log_analytics_workspace_id
   }
 }
 

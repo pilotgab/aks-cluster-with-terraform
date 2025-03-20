@@ -56,3 +56,8 @@ variable "threat_intel_mode" {
   type        = string
   default     = "Alert"
 }
+
+variable "log_analytics_workspace_id" {
+  description = "Log Analytics Workspace Resource ID for flow logs"
+  type        = string
+}
