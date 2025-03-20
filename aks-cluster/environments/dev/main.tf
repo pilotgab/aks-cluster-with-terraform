@@ -66,7 +66,9 @@ module "vnet" {
   public_subnet_cidrs         = var.public_subnet_cidrs
   private_subnet_cidrs        = var.private_subnet_cidrs
   firewall_subnet_cidr        = var.firewall_subnet_cidr
-  log_analytics_workspace_id  = azurerm_log_analytics_workspace.this.id
+  workspace_region            = var.location
+  log_analytics_workspace_id     = azurerm_log_analytics_workspace.this.id
+  log_analytics_workspace_guid   = azurerm_log_analytics_workspace.this.workspace_id
 
   depends_on = [
     azurerm_resource_group.rg1,
