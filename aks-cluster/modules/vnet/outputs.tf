@@ -22,6 +22,7 @@ output "firewall_private_ip" {
   value = azurerm_firewall.this.ip_configuration[0].private_ip_address
 }
 
-output "network_watcher_flow_log_id" {
-  value = azurerm_network_watcher_flow_log.this.id
+output "network_watcher_flow_log_ids" {
+  description = "Map of network watcher flow log IDs by NSG (private/public)"
+  value       = { for key, flow_log in azurerm_network_watcher_flow_log.this : key => flow_log.id }
 }
