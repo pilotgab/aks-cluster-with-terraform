@@ -21,6 +21,16 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.WORKDIR }}/.terraform
+            ${{ env.WORKDIR }}/.terraform.lock.hcl
+          key: terraform-${{ github.ref_name }}-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            terraform-${{ github.ref_name }}-
+
       - name: Terraform Init (Validation)
         run: terraform init
         working-directory: aks-cluster/environments/dev
@@ -71,6 +81,16 @@ jobs:
             echo "STORAGE_ACCOUNT=pilotgabprodbackend2025" >> $GITHUB_ENV
             echo "STATE_KEY=prod.terraform.tfstate" >> $GITHUB_ENV
           fi
+
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.WORKDIR }}/.terraform
+            ${{ env.WORKDIR }}/.terraform.lock.hcl
+          key: terraform-${{ github.ref_name }}-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            terraform-${{ github.ref_name }}-
 
       - name: Configure backend for remote state
         run: |
