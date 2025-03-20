@@ -74,6 +74,19 @@
     route_table_id = azurerm_route_table.public.id
   }
 
+  resource "azurerm_route_table" "private" {
+    name                = "${var.name}-private-rt"
+    location            = data.azurerm_resource_group.this.location
+    resource_group_name = data.azurerm_resource_group.this.name
+    tags                = var.tags
+  }
+
+  resource "azurerm_subnet_route_table_association" "private" {
+    count          = length(var.private_subnet_cidrs)
+    subnet_id      = azurerm_subnet.private[count.index].id
+    route_table_id = azurerm_route_table.private.id
+}
+
   resource "azurerm_network_security_group" "public" {
     name                = "${var.name}-public-nsg"
     location            = data.azurerm_resource_group.this.location
