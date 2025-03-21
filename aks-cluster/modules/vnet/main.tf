@@ -165,10 +165,9 @@ resource "azurerm_storage_account" "this" {
   tags                     = var.tags
 }
 
-resource "azurerm_network_watcher" "this" {
+data "azurerm_network_watcher" "this" {
   name                = "NetworkWatcher_${data.azurerm_resource_group.this.location}"
   resource_group_name = "NetworkWatcherRG"
-  location = data.azurerm_resource_group.this.location
 }
 
 locals {
