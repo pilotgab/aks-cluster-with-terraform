@@ -12,6 +12,10 @@ resource "azurerm_log_analytics_workspace" "this" {
   sku                 = "PerGB2018"
   retention_in_days   = 30
   tags                = var.tags
+
+  depends_on = [
+    azurerm_resource_group.rg1
+  ]
 }
 
 module "ServicePrincipal" {
