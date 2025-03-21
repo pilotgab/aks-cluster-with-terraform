@@ -116,7 +116,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster
+          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
           #terraform force-unlock -force 6bdbcd7e-7745-52de-6b0a-16c1c404632b
           terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
