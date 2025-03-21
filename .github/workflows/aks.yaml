@@ -116,7 +116,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform deploy --auto-approve  -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+          terraform destroy --auto-approve  -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
