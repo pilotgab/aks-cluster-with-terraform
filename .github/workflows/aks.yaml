@@ -133,14 +133,3 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
-      # - name: Terraform destroy
-      #   run: |
-      #     terraform force-unlock -force 47453c0b-dc56-48a3-44bf-e015d1331a54
-      #     terraform destroy -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
-      #   working-directory: ${{ env.WORKDIR }}
-      #   env:
-      #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      #     ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
