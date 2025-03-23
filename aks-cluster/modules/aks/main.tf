@@ -22,8 +22,8 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     vm_size    = "Standard_DS3_v2"
     zones   = [1, 2, 3]
     auto_scaling_enabled = true
-    max_count            = 2
-    min_count            = 2
+    max_count            = 1
+    min_count            = 1
     os_disk_size_gb      = 30
     type                 = "VirtualMachineScaleSets"
     vnet_subnet_id       = var.subnet_ids[0]
