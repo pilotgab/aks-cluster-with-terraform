@@ -26,6 +26,7 @@ resource "azurerm_subnet" "private" {
   address_prefixes     = [var.private_subnet_cidrs[count.index]]
 }
 
+
 resource "azurerm_public_ip" "nat" {
   name                = "${var.name}-nat-ip"
   location            = data.azurerm_resource_group.this.location
