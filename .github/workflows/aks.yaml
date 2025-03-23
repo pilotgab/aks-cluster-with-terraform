@@ -114,20 +114,19 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: Terraform Plan
-        run: |
-          terraform import azurerm_virtual_network.this /subscriptions/2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a/resourceGroups/stage-pilotgab-rg/providers/Microsoft.Network/virtualNetworks/pilotgab-vnet
-          terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
-        working-directory: ${{ env.WORKDIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      # - name: Terraform Plan
+      #   run: |
+      #     terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+      #   working-directory: ${{ env.WORKDIR }}
+      #   env:
+      #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      #     ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Terraform Apply
         continue-on-error: true
-        run: terraform apply  -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+        run: terraform destroy  -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
