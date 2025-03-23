@@ -32,7 +32,7 @@ resource "azurerm_public_ip" "nat" {
   resource_group_name = data.azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  #zones               = var.zones
+  zones               = var.zones
   tags                = var.tags
 }
 

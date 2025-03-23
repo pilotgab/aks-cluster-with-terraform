@@ -5,7 +5,7 @@ variable "rgname" {
 
 variable "location" {
   type    = string
-  default = "australiacentral"
+  default = "cannadacentral"
 }
 
 variable "service_principal_name" {
