@@ -10,7 +10,7 @@ output "client_id" {
 output "client_secret" {
   description = "Password for service principal."
   value       = module.ServicePrincipal.client_secret
-  sensitive = true
+  sensitive   = true
 
 }
 
