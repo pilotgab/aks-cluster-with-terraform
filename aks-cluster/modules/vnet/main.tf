@@ -25,16 +25,11 @@ resource "azurerm_subnet" "private" {
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [var.private_subnet_cidrs[count.index]]
 
-  service_endpoints = ["Microsoft.ContainerRegistry","Microsoft.Storage","Microsoft.KeyVault"]
-  delegation {
-    name = "aks-delegation"
-    service_delegation {
-      name = "Microsoft.ContainerService/managedClusters"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action"
-      ]
-    }
-  }
+  service_endpoints = [
+  "Microsoft.ContainerRegistry",
+  "Microsoft.Storage",
+  "Microsoft.KeyVault"
+]
 }
 
 
