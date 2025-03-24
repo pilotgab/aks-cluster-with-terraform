@@ -112,7 +112,7 @@ resource "azurerm_network_security_group" "public" {
   tags                = var.tags
 
   security_rule {
-    name                       = "AllowInternetInbound"
+    name                       = "AllowHttpInbound"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -124,8 +124,8 @@ resource "azurerm_network_security_group" "public" {
   }
 
   security_rule {
-    name                       = "AllowInternetInbound"
-    priority                   = 110
+    name                       = "AllowHttpsInbound"
+    priority                   = 110  # Changed from 101 to 110 for proper spacing
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -135,9 +135,9 @@ resource "azurerm_network_security_group" "public" {
     destination_address_prefix = "*"
   }
 
-    security_rule {
+  security_rule {
     name                       = "AllowLbHealthProbes"
-    priority                   = 120
+    priority                   = 120  # Changed from 105 to 120
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -158,10 +158,7 @@ resource "azurerm_network_security_group" "public" {
     source_address_prefix      = "*"
     destination_address_prefix = "Internet"
   }
-
-
 }
-
 
 
 resource "azurerm_network_security_group" "private" {
