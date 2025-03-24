@@ -24,6 +24,17 @@ resource "azurerm_subnet" "private" {
   resource_group_name  = data.azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [var.private_subnet_cidrs[count.index]]
+
+  service_endpoints = ["Microsoft.ContainerRegistry","Microsoft.Storage","Microsoft.KeyVault"]
+  delegation {
+    name = "aks-delegation"
+    service_delegation {
+      name = "Microsoft.ContainerService/managedClusters"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action"
+      ]
+    }
+  }
 }
 
 
@@ -69,6 +80,25 @@ resource "azurerm_route_table" "public" {
   }
 }
 
+
+resource "azurerm_route_table" "private" {
+  name                = "${var.name}-private-rt"
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
+
+  route {
+    name           = "internet"
+    address_prefix = "0.0.0.0/0"
+    next_hop_type  = "Internet"
+  }
+}
+
+resource "azurerm_subnet_route_table_association" "private" {
+  count          = length(var.private_subnet_cidrs)
+  subnet_id      = azurerm_subnet.private[count.index].id
+  route_table_id = azurerm_route_table.private.id
+}
+
 resource "azurerm_subnet_route_table_association" "public" {
   count          = length(var.public_subnet_cidrs)
   subnet_id      = azurerm_subnet.public[count.index].id
@@ -86,10 +116,10 @@ resource "azurerm_network_security_group" "public" {
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "*"
+    protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "Internet"
+    destination_port_range     = ["80", "443"]
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
@@ -104,7 +134,21 @@ resource "azurerm_network_security_group" "public" {
     source_address_prefix      = "*"
     destination_address_prefix = "Internet"
   }
+
+  security_rule {
+    name                       = "AllowLbHealthProbes"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8080"
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_address_prefix = "*"
+  }
 }
+
+
 
 resource "azurerm_network_security_group" "private" {
   name                = "${var.name}-private-nsg"
@@ -119,8 +163,48 @@ resource "azurerm_network_security_group" "private" {
     access                     = "Deny"
     protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "*"
+    destination_port_range     = "30000-32767"
     source_address_prefix      = "Internet"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "AllowLbHealthProbes"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8080"
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_address_prefix = "*"
+  }
+
+
+
+  security_rule {
+    name                       = "AllowNodePortRange"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "30000-32767"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "*"
+  }
+
+
+  # Metrics Endpoint
+  security_rule {
+    name                       = "AllowMetricsScraping"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "9100"
+    source_address_prefix      = "VirtualNetwork"
     destination_address_prefix = "*"
   }
 
@@ -135,6 +219,10 @@ resource "azurerm_network_security_group" "private" {
     source_address_prefix      = "*"
     destination_address_prefix = "Internet"
   }
+
+
+
+
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
