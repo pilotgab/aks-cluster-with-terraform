@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     type                 = "VirtualMachineScaleSets"
     vnet_subnet_id       = var.subnet_ids[0]
 
-    
+
 
   }
 
@@ -49,19 +49,10 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   network_profile {
     network_plugin     = "azure"
     load_balancer_sku  = "standard"
-    outbound_type      = "loadBalancer"
-
-    load_balancer_profile {
-      managed_outbound_ip_count = 0
-      outbound_ips {
-        public_ips = [azurerm_public_ip.aks_lb_public_ip.id]
-      }
-      idle_timeout_in_minutes = 4
-    }
+    outbound_type      = "userDefinedRouting"
 
     service_cidr   = "10.250.0.0/16"
     dns_service_ip = "10.250.0.10"
-
   }
 
 
