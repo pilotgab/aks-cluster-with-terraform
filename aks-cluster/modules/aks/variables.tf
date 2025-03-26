@@ -17,9 +17,6 @@ variable "ssh_public_key" {
 variable "node_pool_name" {
 
 }
-variable "cluster_name" {
-
-}
 
 variable "subnet_ids" {
   description = "List of private subnet IDs for the AKS cluster"
@@ -34,16 +31,6 @@ variable "tags" {
 
 variable "cluster_name" {
   description = "AKS cluster name"
-  type        = string
-}
-
-variable "node_pool_name" {
-  description = "AKS node pool name"
-  type        = string
-}
-
-variable "ssh_public_key" {
-  description = "SSH public key for Linux nodes in AKS"
   type        = string
 }
 

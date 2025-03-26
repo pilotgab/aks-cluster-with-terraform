@@ -20,13 +20,6 @@ variable "SUB_ID" {
   type = string
 }
 
-variable "node_pool_name" {
-
-}
-
-variable "cluster_name" {
-
-}
 
 variable "ssh_public_key" {
   description = "ssh public key for the cluster"
@@ -98,15 +91,6 @@ variable "node_pool_name" {
   type        = string
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key for AKS Linux nodes"
-  type        = string
-}
-
-variable "service_principal_name" {
-  description = "Service principal name for AKS"
-  type        = string
-}
 
 variable "client_id" {
   description = "Service principal client ID (can be provided or fetched from ServicePrincipal module)"
