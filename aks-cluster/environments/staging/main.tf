@@ -27,6 +27,14 @@ module "ServicePrincipal" {
   ]
 }
 
+module "loadbalancer" {
+  source               = "../../modules/loadbalancer"
+  resource_group_name  = var.rgname
+  location             = var.location
+  cluster_name         = var.cluster_name
+
+}
+
 resource "azurerm_role_assignment" "rolespn" {
   scope                = "/subscriptions/${var.SUB_ID}"
   role_definition_name = "Contributor"
@@ -95,6 +103,7 @@ module "aks" {
   depends_on = [
     module.ServicePrincipal,
     module.vnet
+
   ]
 }
 

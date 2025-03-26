@@ -64,6 +64,62 @@ variable "tags" {
   default     = {}
 }
 
+variable "lb_frontend_port" {
+  description = "Frontend port for load balancer rule"
+  type        = number
+  default     = 80
+}
+
+variable "lb_backend_port" {
+  description = "Backend port for load balancer rule"
+  type        = number
+  default     = 80
+}
+
+variable "lb_probe_port" {
+  description = "Port used by load balancer probe"
+  type        = number
+  default     = 80
+}
+
+variable "lb_protocol" {
+  description = "Protocol for load balancer rules and probe"
+  type        = string
+  default     = "Tcp"
+}
+
+variable "cluster_name" {
+  description = "Name of the AKS cluster"
+  type        = string
+}
+
+variable "node_pool_name" {
+  description = "Name of the AKS node pool"
+  type        = string
+}
+
+variable "ssh_public_key" {
+  description = "SSH public key for AKS Linux nodes"
+  type        = string
+}
+
+variable "service_principal_name" {
+  description = "Service principal name for AKS"
+  type        = string
+}
+
+variable "client_id" {
+  description = "Service principal client ID (can be provided or fetched from ServicePrincipal module)"
+  type        = string
+  default     = ""
+}
+
+variable "client_secret" {
+  description = "Service principal client secret (can be provided or fetched from ServicePrincipal module)"
+  type        = string
+  default     = ""
+}
+
 # variable "firewall_dns_servers" {
 #   description = "List of DNS servers for the firewall policy"
 #   type        = list(string)
