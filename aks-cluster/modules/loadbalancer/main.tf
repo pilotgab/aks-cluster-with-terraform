@@ -7,8 +7,6 @@ resource "azurerm_public_ip" "aks_lb_public_ip" {
   resource_group_name = "${var.resource_group_name}-nrg"
   allocation_method   = "Static"
   sku                 = "Standard"
-
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster]
 }
 
 # CREATE CUSTOM LOAD BALANCER

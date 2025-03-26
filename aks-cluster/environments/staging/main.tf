@@ -29,7 +29,7 @@ module "ServicePrincipal" {
 
 module "loadbalancer" {
   source               = "../../modules/loadbalancer"
-  resource_group_name  = var.rgname
+  resource_group_name  = module.aks.node_resource_group
   location             = var.location
   cluster_name         = var.cluster_name
 
