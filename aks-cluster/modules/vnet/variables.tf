@@ -71,3 +71,8 @@ variable "workspace_region" {
   description = "The region of the Log Analytics workspace."
   type        = string
 }
+
+variable "cluster_name" {
+  description = "AKS cluster name"
+  type        = string
+}
