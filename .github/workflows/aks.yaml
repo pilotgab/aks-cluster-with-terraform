@@ -104,7 +104,6 @@ jobs:
             }
           }
           EOF
-
       - name: Terraform Init
         run: terraform init
         working-directory: ${{ env.WORKDIR }}
