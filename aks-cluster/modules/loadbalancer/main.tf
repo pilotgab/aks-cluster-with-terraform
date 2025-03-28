@@ -49,17 +49,12 @@ resource "azurerm_lb_rule" "aks_http_rule" {
   probe_id                       = azurerm_lb_probe.aks_http_probe.id
 }
 
-# Backend Address Pool Address (Simplified and working version)
-resource "azurerm_lb_backend_address_pool_address" "aks_vmss" {
-  name                    = "${var.cluster_name}-vmss"
+# Backend Address Pool Address
+resource "azurerm_lb_backend_address_pool_association" "aks_vmss" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
-  virtual_network_id      = var.vnet_id
-
-  # Use first available IP from your first private subnet
-  ip_address = cidrhost(var.private_subnet_cidrs[0], 10)
+  virtual_machine_scale_set_id = azurerm_kubernetes_cluster.this.default_node_pool[0].vms_id
 
   depends_on = [
-    azurerm_lb.aks_custom_lb,
-    azurerm_lb_backend_address_pool.aks_backend_pool
+    azurerm_kubernetes_cluster.this
   ]
 }

@@ -228,17 +228,44 @@ resource "azurerm_network_security_group" "private" {
 resource "azurerm_network_security_group" "aks_node_nsg" {
   name                = "aks-node-nsg"
   location            = data.azurerm_resource_group.this.location
-  resource_group_name = "${var.resource_group_name}"
+  resource_group_name = var.resource_group_name
 
+  # Allow HTTP traffic to Traefik
   security_rule {
-    name                       = "AllowLbHealthProbes"
+    name                       = "AllowHttpInbound"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_ranges    = ["80", "443", "8080", "10256"]
-    source_address_prefix      = "AzureLoadBalancer"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Allow HTTPS traffic to Traefik
+  security_rule {
+    name                       = "AllowHttpsInbound"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  # Allow Outbound for Certbot (Let's Encrypt)
+  security_rule {
+    name                       = "AllowOutboundCerts"
+    priority                   = 200
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 }
