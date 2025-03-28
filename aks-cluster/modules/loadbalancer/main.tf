@@ -1,10 +1,14 @@
 
+data "azurerm_resource_group" "this" {
+  name = var.resource_group_name
+}
+
 
 # CREATE PUBLIC IP FOR CUSTOM LB
 resource "azurerm_public_ip" "aks_lb_public_ip" {
   name                = "${var.cluster_name}-custom-lb-pip"
   location            = var.location
-  resource_group_name = "${var.resource_group_name}-nrg"
+  resource_group_name = data.azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
 }
@@ -13,7 +17,7 @@ resource "azurerm_public_ip" "aks_lb_public_ip" {
 resource "azurerm_lb" "aks_custom_lb" {
   name                = "${var.cluster_name}-custom-lb"
   location            = var.location
-  resource_group_name = "${var.resource_group_name}-nrg"
+  resource_group_name = data.azurerm_resource_group.this.name
   sku                 = "Standard"
 
   frontend_ip_configuration {

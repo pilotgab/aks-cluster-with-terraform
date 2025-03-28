@@ -12,4 +12,3 @@ variable "cluster_name" {
   description = "AKS cluster name"
   type        = string
 }
-
