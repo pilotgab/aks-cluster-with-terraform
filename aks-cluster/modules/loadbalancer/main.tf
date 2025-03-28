@@ -49,13 +49,14 @@ resource "azurerm_lb_rule" "aks_http_rule" {
   probe_id                       = azurerm_lb_probe.aks_http_probe.id
 }
 
+data "azurerm_network_interface" "aks_nic" {
+  name                = "aks-agentpool-xxx"
+  resource_group_name = "${var.resource_group_name}-nrg"
+}
+
 # Associate VMSS with backend pool
-resource "azurerm_lb_backend_address_pool_address" "aks_vmss_pool" {
-  name                    = "${var.cluster_name}-vmss-backend"
+resource "azurerm_network_interface_backend_address_pool_association" "aks_nic_pool" {
+  network_interface_id    = data.azurerm_network_interface.aks_nic.id
+  ip_configuration_name   = "ipconfig1"
   backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
-  virtual_network_id      = var.vnet_id
-  ip_configuration {
-    name    = "ipconfig1"
-    subnet_id = azurerm_subnet.private[0].id
-  }
 }

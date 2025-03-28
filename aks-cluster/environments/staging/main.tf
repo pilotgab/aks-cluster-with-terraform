@@ -33,6 +33,7 @@ module "loadbalancer" {
   location             = var.location
   cluster_name         = var.cluster_name
   vnet_id              = module.vnet.vnet_id
+  aks_nic_name        = "aks-agentpool-xxx"
 
   depends_on = [module.vnet]
 }

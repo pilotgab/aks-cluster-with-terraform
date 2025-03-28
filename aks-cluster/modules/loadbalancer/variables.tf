@@ -17,3 +17,8 @@ variable "vnet_id" {
   description = "ID of the VNET where AKS is deployed"
   type        = string
 }
+
+variable "aks_nic_name" {
+  description = "Name of the AKS node network interface"
+  type        = string
+}
