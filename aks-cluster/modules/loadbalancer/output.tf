@@ -21,4 +21,11 @@ output "load_balancer_probe_id" {
 output "load_balancer_rule_id" {
   description = "ID of the load balancer rule for HTTP traffic"
   value       = azurerm_lb_rule.aks_http_rule.id
+
+}
+
+# Add output.tf to easily reference the VNet ID
+output "vnet_id" {
+  value = azurerm_virtual_network.this.id
+  description = "The ID of the virtual network"
 }
