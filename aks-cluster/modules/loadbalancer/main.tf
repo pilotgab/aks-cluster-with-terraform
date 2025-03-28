@@ -61,4 +61,9 @@ resource "azurerm_lb_backend_address_pool_address" "aks_vmss" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
   virtual_network_id      = var.vnet_id
   ip_address              = cidrhost(var.aks_subnet_cidr, 10)
+
+  depends_on = [
+    azurerm_lb.aks_custom_lb,
+    azurerm_lb_backend_address_pool.aks_backend_pool
+  ]
 }
