@@ -50,7 +50,7 @@ resource "azurerm_lb_rule" "aks_http_rule" {
 }
 
 # Backend Address Pool Address
-resource "azurerm_lb_backend_address_pool_association" "aks_vmss" {
+resource "azurerm_lb_backend_address_pool_backend_address" "aks_vmss" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
   virtual_machine_scale_set_id = azurerm_kubernetes_cluster.this.default_node_pool[0].vms_id
 
