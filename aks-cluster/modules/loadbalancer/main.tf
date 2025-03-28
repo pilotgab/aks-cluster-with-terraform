@@ -49,14 +49,16 @@ resource "azurerm_lb_rule" "aks_http_rule" {
   probe_id                       = azurerm_lb_probe.aks_http_probe.id
 }
 
-data "azurerm_network_interface" "aks_nic" {
-  name                = "aks-agentpool-xxx"
-  resource_group_name = "${var.resource_group_name}"
+# Get the AKS node resource group
+data "azurerm_kubernetes_cluster" "main" {
+  name                = var.cluster_name
+  resource_group_name = var.aks_resource_group_name
 }
 
-# Associate VMSS with backend pool
-resource "azurerm_network_interface_backend_address_pool_association" "aks_nic_pool" {
-  network_interface_id    = data.azurerm_network_interface.aks_nic.id
-  ip_configuration_name   = "ipconfig1"
+
+resource "azurerm_lb_backend_address_pool_address" "aks_vmss" {
+  name                    = "${var.cluster_name}-vmss"
   backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
+  virtual_network_id      = var.vnet_id
+  ip_address              = cidrhost(var.aks_subnet_cidr, 10)
 }
