@@ -28,3 +28,11 @@ output "load_balancer_rule_id" {
 output "vnet_id" {
   value = var.vnet_id  # Just output the input variable
 }
+
+output "lb_public_ip" {
+  value = azurerm_public_ip.aks_lb_public_ip.ip_address
+}
+
+output "lb_id" {
+  value = azurerm_lb.aks_custom_lb.id
+}
