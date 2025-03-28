@@ -30,13 +30,10 @@ module "ServicePrincipal" {
 module "loadbalancer" {
   source                    = "../../modules/loadbalancer"
   resource_group_name       = module.aks.node_resource_group
-  aks_resource_group_name   = var.rgname
   location                  = var.location
   cluster_name              = var.cluster_name
   vnet_id                   = module.vnet.vnet_id
-  aks_subnet_cidr           = var.private_subnet_cidrs[0]
-
-  depends_on = [module.vnet]
+  private_subnet_cidrs      = var.private_subnet_cidrs
 }
 
 resource "azurerm_role_assignment" "rolespn" {

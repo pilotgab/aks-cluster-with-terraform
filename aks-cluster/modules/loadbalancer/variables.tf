@@ -18,12 +18,7 @@ variable "vnet_id" {
   type        = string
 }
 
-variable "aks_subnet_cidr" {
-  description = "CIDR range of the AKS subnet"
-  type        = string
-}
-
-variable "aks_resource_group_name" {
-  description = "Name of the AKS resource group (not the node RG)"
-  type        = string
+variable "private_subnet_cidrs" {
+  description = "List of private subnet CIDR ranges"
+  type        = list(string)
 }

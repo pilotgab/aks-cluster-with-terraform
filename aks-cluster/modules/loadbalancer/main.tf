@@ -56,7 +56,7 @@ resource "azurerm_lb_backend_address_pool_address" "aks_vmss" {
   virtual_network_id      = var.vnet_id
 
   # Use first available IP from your first private subnet
-  ip_address = cidrhost(var.private_subnet_cidrs[0], 10) # 10.0.16.10
+  ip_address = cidrhost(var.private_subnet_cidrs[0], 10)
 
   depends_on = [
     azurerm_lb.aks_custom_lb,
