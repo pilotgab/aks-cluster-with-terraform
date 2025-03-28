@@ -32,8 +32,7 @@ module "loadbalancer" {
   resource_group_name  = module.aks.node_resource_group
   location             = var.location
   cluster_name         = var.cluster_name
-  vnet_id              = azurerm_virtual_network.this.id
-
+  vnet_id              = module.vnet.vnet_id
 }
 
 resource "azurerm_role_assignment" "rolespn" {

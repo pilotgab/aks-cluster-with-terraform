@@ -18,6 +18,8 @@ resource "azurerm_lb" "aks_custom_lb" {
     name                 = "LoadBalancerFrontEnd"
     public_ip_address_id = azurerm_public_ip.aks_lb_public_ip.id
   }
+
+   depends_on = [module.vnet]
 }
 
 # Backend Address Pool

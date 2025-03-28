@@ -14,12 +14,6 @@ output "client_secret" {
 
 }
 
-
-# outputs.tf (root)
-output "vnet_id" {
-  value = module.vnet.vnet_id
-}
-
 output "public_subnets" {
   value = module.vnet.public_subnets
 }
