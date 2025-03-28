@@ -34,7 +34,7 @@ module "loadbalancer" {
   cluster_name         = var.cluster_name
   vnet_id              = module.vnet.vnet_id
 
-  depends_on = [module.vnet] l
+  depends_on = [module.vnet]
 }
 
 resource "azurerm_role_assignment" "rolespn" {
