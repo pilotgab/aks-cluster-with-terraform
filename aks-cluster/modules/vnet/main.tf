@@ -120,7 +120,7 @@ resource "azurerm_network_security_group" "public" {
 
   security_rule {
     name                       = "AllowHttpsInbound"
-    priority                   = 110  # Changed from 101 to 110 for proper spacing
+    priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -132,12 +132,12 @@ resource "azurerm_network_security_group" "public" {
 
   security_rule {
     name                       = "AllowLbHealthProbes"
-    priority                   = 120  # Changed from 105 to 120
+    priority                   = 120
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "8080"
+    destination_port_ranges    = ["80", "443", "8080", "10256"]
     source_address_prefix      = "AzureLoadBalancer"
     destination_address_prefix = "*"
   }
@@ -181,12 +181,10 @@ resource "azurerm_network_security_group" "private" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "8080"
+    destination_port_ranges    = ["80", "443", "8080", "10256"]
     source_address_prefix      = "AzureLoadBalancer"
     destination_address_prefix = "*"
   }
-
-
 
   security_rule {
     name                       = "AllowNodePortRange"
@@ -225,10 +223,24 @@ resource "azurerm_network_security_group" "private" {
     source_address_prefix      = "*"
     destination_address_prefix = "Internet"
   }
+}
 
+resource "azurerm_network_security_group" "aks_node_nsg" {
+  name                = "aks-node-nsg"
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = "${var.resource_group_name}-nrg"
 
-
-
+  security_rule {
+    name                       = "AllowLbHealthProbes"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_ranges    = ["80", "443", "8080", "10256"]
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {

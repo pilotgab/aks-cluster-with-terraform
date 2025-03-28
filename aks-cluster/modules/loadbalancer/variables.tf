@@ -12,3 +12,8 @@ variable "cluster_name" {
   description = "AKS cluster name"
   type        = string
 }
+
+variable "vnet_id" {
+  description = "ID of the VNET where AKS is deployed"
+  type        = string
+}

@@ -1,23 +1,17 @@
-
-data "azurerm_resource_group" "this" {
-  name = var.resource_group_name
-}
-
-
-# CREATE PUBLIC IP FOR CUSTOM LB
+# Public IP for Load Balancer
 resource "azurerm_public_ip" "aks_lb_public_ip" {
   name                = "${var.cluster_name}-custom-lb-pip"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.this.name
+  resource_group_name = "${var.resource_group_name}-nrg"
   allocation_method   = "Static"
   sku                 = "Standard"
 }
 
-# CREATE CUSTOM LOAD BALANCER
+# Load Balancer
 resource "azurerm_lb" "aks_custom_lb" {
   name                = "${var.cluster_name}-custom-lb"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.this.name
+  resource_group_name = "${var.resource_group_name}-nrg"
   sku                 = "Standard"
 
   frontend_ip_configuration {
@@ -26,30 +20,42 @@ resource "azurerm_lb" "aks_custom_lb" {
   }
 }
 
-# BACKEND ADDRESS POOL
+# Backend Address Pool
 resource "azurerm_lb_backend_address_pool" "aks_backend_pool" {
   name            = "aks-backend-pool"
   loadbalancer_id = azurerm_lb.aks_custom_lb.id
 }
 
-# HEALTH PROBE
+# Health Probe - HTTP (for 200 status code checks)
 resource "azurerm_lb_probe" "aks_http_probe" {
-  name                = "http-probe"
+  name                = "http-health-probe"
   loadbalancer_id     = azurerm_lb.aks_custom_lb.id
-  protocol            = "Tcp"
-  port                = 80
-  interval_in_seconds = 5
+  protocol            = "Http"
+  port                = 8000
+  request_path        = "/ping"
+  interval_in_seconds = 15
   number_of_probes    = 2
 }
 
-# LOAD BALANCING RULE
+# Load Balancing Rule for HTTP
 resource "azurerm_lb_rule" "aks_http_rule" {
   name                           = "http-rule"
   loadbalancer_id                = azurerm_lb.aks_custom_lb.id
   protocol                       = "Tcp"
   frontend_port                  = 80
-  backend_port                   = 80
+  backend_port                   = 8000
   frontend_ip_configuration_name = "LoadBalancerFrontEnd"
-  backend_address_pool_ids = [azurerm_lb_backend_address_pool.aks_backend_pool.id]
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.aks_backend_pool.id]
   probe_id                       = azurerm_lb_probe.aks_http_probe.id
+}
+
+# Associate VMSS with backend pool
+resource "azurerm_lb_backend_address_pool_address" "aks_vmss_pool" {
+  name                    = "${var.cluster_name}-vmss-backend"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.aks_backend_pool.id
+  virtual_network_id      = var.vnet_id
+  ip_configuration {
+    name    = "ipconfig1"
+    subnet_id = azurerm_subnet.private[0].id
+  }
 }
