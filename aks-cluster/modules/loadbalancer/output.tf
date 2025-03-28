@@ -26,6 +26,5 @@ output "load_balancer_rule_id" {
 
 # Add output.tf to easily reference the VNet ID
 output "vnet_id" {
-  value = azurerm_virtual_network.this.id
-  description = "The ID of the virtual network"
+  value = var.vnet_id  # Just output the input variable
 }
