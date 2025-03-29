@@ -108,7 +108,6 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init
-          terraform refresh-only
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
