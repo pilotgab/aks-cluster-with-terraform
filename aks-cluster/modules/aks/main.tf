@@ -52,13 +52,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     load_balancer_sku  = "standard"
     outbound_type      = "userDefinedRouting"
 
-     load_balancer_profile {
-      managed_outbound_ip_count = 2
-      outbound_ports_allocated  = 1024
-      idle_timeout_in_minutes   = 30
-    }
-
-
     nat_gateway_profile {
       idle_timeout_in_minutes = 4
     }
