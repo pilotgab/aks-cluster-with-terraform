@@ -80,12 +80,6 @@ resource "azurerm_route_table" "private" {
   name                = "private-route-table"
   location            = data.azurerm_resource_group.this.location
   resource_group_name = data.azurerm_resource_group.this.name
-
-  route {
-    name           = "nat-gateway"
-    address_prefix = "0.0.0.0/0"
-    next_hop_type = "Internet"
-  }
 }
 
 resource "azurerm_subnet_route_table_association" "private" {
