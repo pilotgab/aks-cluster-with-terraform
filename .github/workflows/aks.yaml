@@ -107,7 +107,8 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init
+          terraform init -upgrade
+          terraform refresh-only
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -117,7 +118,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/***/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/***/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster
 
           terraform plan -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
