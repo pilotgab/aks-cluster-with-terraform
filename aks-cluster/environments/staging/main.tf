@@ -27,15 +27,6 @@ module "ServicePrincipal" {
   ]
 }
 
-module "loadbalancer" {
-  source                    = "../../modules/loadbalancer"
-  resource_group_name       = module.aks.node_resource_group
-  location                  = var.location
-  cluster_name              = var.cluster_name
-  vnet_id                   = module.vnet.vnet_id
-  private_subnet_cidrs      = var.private_subnet_cidrs
-}
-
 resource "azurerm_role_assignment" "rolespn" {
   scope                = "/subscriptions/${var.SUB_ID}"
   role_definition_name = "Contributor"

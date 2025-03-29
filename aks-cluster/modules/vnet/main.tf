@@ -77,14 +77,15 @@ resource "azurerm_route_table" "public" {
 
 
 resource "azurerm_route_table" "private" {
-  name                = "${var.name}-private-rt"
-  location            = data.azurerm_resource_group.this.location
-  resource_group_name = data.azurerm_resource_group.this.name
+  name                = "private-route-table"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 
   route {
-    name           = "internet"
+    name           = "nat-gateway"
     address_prefix = "0.0.0.0/0"
-    next_hop_type  = "Internet"
+    next_hop_type  = "VirtualAppliance"
+    next_hop_in_ip_address = azurerm_nat_gateway.nat.public_ip_address
   }
 }
 
@@ -137,7 +138,7 @@ resource "azurerm_network_security_group" "public" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_ranges    = ["80", "443", "8080", "10256"]
+    destination_port_ranges    = ["80", "443","8000", "8080", "10256"]
     source_address_prefix      = "AzureLoadBalancer"
     destination_address_prefix = "*"
   }
@@ -181,7 +182,7 @@ resource "azurerm_network_security_group" "private" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_ranges    = ["80", "443", "8080", "10256"]
+    destination_port_ranges    = ["80", "443", "8000", "8080", "10256"]
     source_address_prefix      = "AzureLoadBalancer"
     destination_address_prefix = "*"
   }
@@ -238,7 +239,7 @@ resource "azurerm_network_security_group" "aks_node_nsg" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "80"
+    destination_port_range     = ["80", "8080", "8000", "443"]
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
