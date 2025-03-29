@@ -2,22 +2,26 @@
 resource "azurerm_public_ip" "aks_lb_public_ip" {
   name                = "${var.cluster_name}-custom-lb-pip"
   location            = var.location
-  resource_group_name = var.resource_group_name # "stage-pilotgab-rg"
+  resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  depends_on = [azurerm_kubernetes_cluster.aks-cluster]
 }
 
 # Load Balancer
 resource "azurerm_lb" "aks_custom_lb" {
   name                = "${var.cluster_name}-custom-lb"
   location            = var.location
-  resource_group_name = var.resource_group_name # "stage-pilotgab-rg"
+  resource_group_name = var.resource_group_name
   sku                 = "Standard"
 
   frontend_ip_configuration {
     name                 = "LoadBalancerFrontEnd"
     public_ip_address_id = azurerm_public_ip.aks_lb_public_ip.id
   }
+
+  depends_on = [azurerm_kubernetes_cluster.aks-cluster]
 }
 
 # Backend Address Pool
