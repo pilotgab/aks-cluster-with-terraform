@@ -107,7 +107,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -upgrade
+          terraform init
         working-directory: ${{ env.WORKDIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
