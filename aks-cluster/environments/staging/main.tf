@@ -21,7 +21,8 @@ resource "azurerm_log_analytics_workspace" "this" {
 module "ServicePrincipal" {
   source                 = "../../modules/ServicePrincipal"
   service_principal_name = var.service_principal_name
-  vnet_id = azurerm_virtual_network.this.id
+  vnet_id = module.vnet.vnet_id
+
 
   depends_on = [
     azurerm_resource_group.rg1
@@ -67,6 +68,7 @@ module "vnet" {
   name                 = var.name
   resource_group_name  = var.rgname
   location             = var.location
+
   address_space        = var.address_space
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs

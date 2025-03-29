@@ -17,7 +17,7 @@ resource "azuread_service_principal_password" "main" {
 
 # Define the Role Assignment for Network Contributor
 resource "azurerm_role_assignment" "network_contributor" {
-  scope                = var.vnet_id
+  scope                = azurerm_virtual_network.this.id
   role_definition_name = "Network Contributor"
   principal_id         = azuread_service_principal.main.object_id
 }

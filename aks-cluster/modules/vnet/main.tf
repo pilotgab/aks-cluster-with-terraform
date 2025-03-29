@@ -78,14 +78,14 @@ resource "azurerm_route_table" "public" {
 
 resource "azurerm_route_table" "private" {
   name                = "private-route-table"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
 
   route {
     name           = "nat-gateway"
     address_prefix = "0.0.0.0/0"
     next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_nat_gateway.nat.public_ip_address
+    next_hop_in_ip_address = azurerm_public_ip.nat.ip_address
   }
 }
 
@@ -239,7 +239,7 @@ resource "azurerm_network_security_group" "aks_node_nsg" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = ["80", "8080", "8000", "443"]
+    destination_port_ranges     = ["80", "8080", "8000", "443"]
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
