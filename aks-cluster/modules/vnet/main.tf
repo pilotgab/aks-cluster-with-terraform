@@ -85,7 +85,7 @@ resource "azurerm_route_table" "private" {
     name           = "nat-gateway"
     address_prefix = "0.0.0.0/0"
     next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_nat_gateway.this.public_ip_addresses[0].ip_address
+    next_hop_in_ip_address = azurerm_public_ip.nat.ip_address
   }
 }
 
