@@ -84,8 +84,8 @@ resource "azurerm_route_table" "private" {
   route {
     name           = "nat-gateway"
     address_prefix = "0.0.0.0/0"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_public_ip.nat.ip_address
+    next_hop_type = "VirtualNetworkGateway"
+    next_hop_in_ip_address = azurerm_nat_gateway.this.id
   }
 }
 
@@ -139,7 +139,7 @@ resource "azurerm_network_security_group" "public" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_ranges    = ["80", "443","8000", "8080", "10256"]
-    source_address_prefix      = "AzureLoadBalancer"
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
@@ -183,7 +183,7 @@ resource "azurerm_network_security_group" "private" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_ranges    = ["80", "443", "8000", "8080", "10256"]
-    source_address_prefix      = "AzureLoadBalancer"
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
@@ -203,7 +203,7 @@ resource "azurerm_network_security_group" "private" {
   # Metrics Endpoint
   security_rule {
     name                       = "AllowMetricsScraping"
-    priority                   = 110
+    priority                   = 115
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -214,8 +214,32 @@ resource "azurerm_network_security_group" "private" {
   }
 
   security_rule {
+  name                       = "AllowTraefikToBackend"
+  priority                   = 110
+  direction                  = "Inbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "*"
+  source_address_prefix      = "10.0.16.0/21"
+  destination_address_prefix = "10.0.24.0/21"
+}
+
+security_rule {
+  name                       = "AllowBackendToTraefik"
+  priority                   = 120
+  direction                  = "Outbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "*"
+  source_address_prefix      = "10.0.24.0/21"
+  destination_address_prefix = "10.0.16.0/21"
+}
+
+  security_rule {
     name                       = "AllowOutboundInternet"
-    priority                   = 120
+    priority                   = 130
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "*"
