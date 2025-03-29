@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   network_profile {
     network_plugin     = "azure"
     load_balancer_sku  = "standard"
-    outbound_type      = "loadBalancer"
+    outbound_type      = "userDefinedRouting"
 
      load_balancer_profile {
       managed_outbound_ip_count = 2

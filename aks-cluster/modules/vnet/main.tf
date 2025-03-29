@@ -84,8 +84,8 @@ resource "azurerm_route_table" "private" {
   route {
     name           = "nat-gateway"
     address_prefix = "0.0.0.0/0"
-    next_hop_type  = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_public_ip.nat.ip_address
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = azurerm_nat_gateway.this.public_ip_addresses[0].ip_address
   }
 }
 
@@ -187,23 +187,23 @@ resource "azurerm_network_security_group" "private" {
     destination_address_prefix = "*"
   }
 
-  security_rule {
-    name                       = "AllowNodePortRange"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "30000-32767"
-    source_address_prefix      = "VirtualNetwork"
-    destination_address_prefix = "*"
-  }
+  # security_rule {
+  #   name                       = "AllowNodePortRange"
+  #   priority                   = 110
+  #   direction                  = "Inbound"
+  #   access                     = "Allow"
+  #   protocol                   = "Tcp"
+  #   source_port_range          = "*"
+  #   destination_port_range     = "30000-32767"
+  #   source_address_prefix      = "VirtualNetwork"
+  #   destination_address_prefix = "*"
+  # }
 
 
   # Metrics Endpoint
   security_rule {
     name                       = "AllowMetricsScraping"
-    priority                   = 120
+    priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -215,7 +215,7 @@ resource "azurerm_network_security_group" "private" {
 
   security_rule {
     name                       = "AllowOutboundInternet"
-    priority                   = 200
+    priority                   = 120
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "*"
