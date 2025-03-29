@@ -27,6 +27,10 @@ output "network_watcher_flow_log_ids" {
   value       = { for key, flow_log in azurerm_network_watcher_flow_log.this : key => flow_log.id }
 }
 
+# output "nat_public_ip" {
+#   value = azurerm_nat_gateway.nat.public_ip_address
+# }
+
 output "nat_public_ip" {
-  value = azurerm_nat_gateway.nat.public_ip_address
+  value = azurerm_public_ip.nat.ip_address
 }

@@ -78,8 +78,8 @@ resource "azurerm_route_table" "public" {
 
 resource "azurerm_route_table" "private" {
   name                = "private-route-table"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 
   route {
     name           = "nat-gateway"
