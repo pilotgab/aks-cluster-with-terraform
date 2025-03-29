@@ -128,7 +128,7 @@ jobs:
       - name: Terraform Apply
         continue-on-error: true
         run: |
-          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster
+          terraform import module.aks.azurerm_kubernetes_cluster.aks-cluster /subscriptions/2fdeef7a-f11a-4a4e-8db7-b318d3f3d86a/resourceGroups/stage-pilotgab-rg/providers/Microsoft.ContainerService/managedClusters/stage-pilotgab-cluster -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
           terraform apply  -auto-approve -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
         working-directory: ${{ env.WORKDIR }}
         env:
